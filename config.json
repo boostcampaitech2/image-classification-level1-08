@@ -1,16 +1,16 @@
 {
-    "name": "Cifar_LeNet",
+    "name": "Ustage_CLIP",
     "n_gpu": 1,
 
     "arch": {
-        "type": "CifarModel",
+        "type": "ResNet18",
         "args": {}
     },
     "data_loader": {
-        "type": "CifarDataLoader",
+        "type": "UstageDataLoader",
         "args":{
-            "data_dir": "data/",
-            "batch_size": 128,
+            "data_dir": "../input/data",
+            "batch_size": 32,
             "shuffle": true,
             "validation_split": 0.1,
             "num_workers": 2
