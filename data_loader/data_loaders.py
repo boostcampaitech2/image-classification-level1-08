@@ -69,7 +69,7 @@ class BaseDatasetForThreeHead(Dataset):
     def __init__(
         self,
         data_dir: str,
-        feature_extractor: Optional[FeaturExtractor] = nn.Identity(),
+        feature_extractor: Optional[FeaturExtractor] = torch.nn.Identity(),
         transform: Optional[Compose] = None,
     ):
         """
