@@ -7,6 +7,9 @@ from torch.utils.data import Dataset
 
 from torchvision import datasets, transforms
 from base import BaseDataLoader
+import transformers
+from PIL import Image
+import torch
 
 
 Compose = torchvision.transforms.transforms.Compose
@@ -132,9 +135,9 @@ class BaseDatasetForThreeHead(Dataset):
             (BaseDatasetForThreeHead, BaseDatasetForThreeHead)
         """
         assert test_size > 0 and test_size < 1
-        train_dataset = CustomDataset(
+        train_dataset = BaseDatasetForThreeHead(
             self.data_dir, self.feature_extractor, self.transform)
-        test_dataset = CustomDataset(
+        test_dataset = BaseDatasetForThreeHead(
             self.data_dir, self.feature_extractor, self.transform)
         if shuffle:
             total_imgs, labels = self.shuffle()
