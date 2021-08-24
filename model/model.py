@@ -23,6 +23,7 @@ class MnistModel(BaseModel):
         x = self.fc2(x)
         return F.log_softmax(x, dim=1)
 
+
 class CifarModel(BaseModel):
     def __init__(self, num_classes=10):
         super().__init__()
@@ -42,6 +43,7 @@ class CifarModel(BaseModel):
         x = self.fc3(x)
         return F.log_softmax(x, dim=1)
 
+
 class ResNet18(BaseModel):
     def __init__(self, num_classes=18):
         super().__init__()
@@ -51,6 +53,7 @@ class ResNet18(BaseModel):
     def forward(self, x):
         x = self.feature_extractor(x)
         return F.log_softmax(x, dim=1)
+
 
 class ClipModel(BaseModel):
     def __init__(self):
