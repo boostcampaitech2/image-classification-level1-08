@@ -5,6 +5,7 @@ import torch
 import torch.nn as nn
 import transformers
 
+import pandas as pd
 from dataclasses import asdict
 
 from transformers import AutoConfig, AutoFeatureExtractor
@@ -36,7 +37,7 @@ def main():
     if training_args.report_to == "wanbd":
         import wandb
         wandb.login()
-        os.environ["WANDB_PROJECT"] = training_args.wandb_project
+        %env WANDB_PROJECT={training_args.wandb_project}
 
     transform = build_transform(transform_args)
 
@@ -90,12 +91,13 @@ def main():
         data_args.test_data_dir,
         is_train=False,
         transform=feature_extractor,
-        **asdict(data_args),
+        return_image=data_args.return_image,
+        level=data_args.level,
     )
 
     # @TODO: level 3 script
     # @TODO: transform 처리 자동화
-    predictions = trainer.predict(test_dataset=eval_dataset)
+    predictions = trainer.predict(test_dataset=test_dataset)
     preds = predictions.predictions
     preds = preds.argmax(axis=-1)
 

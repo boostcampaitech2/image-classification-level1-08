@@ -1,12 +1,17 @@
 import os
 import natsort
 import numpy as np
-import torchvision
 from typing import Optional, List, Dict, Union
-from torch.utils.data import Dataset
-import transformers
+
 from PIL import Image
 from copy import deepcopy
+
+import torch
+import torchvision
+from torch.utils.data import Dataset
+
+import transformers
+from transformers.feature_extraction_utils import BatchFeature
 
 
 Compose = torchvision.transforms.transforms.Compose
@@ -150,10 +155,10 @@ class FaceMaskDataset(Dataset, FileReadMixin):
         img_loc = os.path.join(self.data_dir, self.total_imgs[idx])
         image = Image.open(img_loc).convert("RGB")
         pixel_values = self.transform(image)
+        if isinstance(pixel_values, BatchFeature):
+            pixel_values = pixel_values["pixel_values"][0]
         if isinstance(pixel_values, np.ndarray):
             pixel_values = torch.from_numpy(pixel_values)
-        elif isinstance(pixel_values, dict):
-            pixel_values = pixel_values["pixel_values"][0]
         output = {"pixel_values": pixel_values}
         if self.is_train:
             mask = self.mask2id[self.labels[idx][0]]
