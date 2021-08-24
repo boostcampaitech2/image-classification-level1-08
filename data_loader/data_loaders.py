@@ -104,7 +104,7 @@ class UstageMaskDataset(Dataset):
         elif self.level == 3:
             label = [label_mask, label_gender, label_age]
         else:
-            raise AttributeError(f"level must be 1 or 3. but got {level}.")
+            raise AttributeError(f"level must be 1 or 3. but got {self.level}.")
 
         img_path = os.path.join("..", path)
         image = Image.open(img_path).convert("RGB")
