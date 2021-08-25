@@ -23,26 +23,22 @@ def shuffle_idx(*args, seed=42):
 
 
 def select(dataset, ratio, right=False):
-    length = len(dataset)
-    if right:
-        setattr(dataset, "total_imgs", dataset.total_imgs[:int(length*ratio)])
-        if dataset.is_train:
-            setattr(dataset, "labels", dataset.labels[:int(length*ratio)])
-    else:
-        setattr(dataset, "total_imgs", dataset.total_imgs[int(length*ratio):])
-        if dataset.is_train:
-            setattr(dataset, "labels", dataset.labels[int(length*ratio):])
-    return dataset
+    new_dataset = deepcopy(dataset)
+    start = None if right else int(len(new_dataset)*ratio)
+    end = None if not right else int(len(new_dataset)*ratio)
+    new_dataset.total_imgs = new_dataset.total_imgs[start:end]
+    new_dataset.labels = new_dataset.labels[start:end]
+    return new_dataset
 
 
 def train_test_split(dataset, test_size=0.2, shuffle=True, seed=42):
     assert test_size > 0 and test_size < 1
-    if shuffle:
-        x, y = shuffle_idx(dataset.total_imgs, dataset.labels, seed=42)
-        setattr(dataset, "total_imgs", x)
-        setattr(dataset, "labels", y)
     new_dataset = deepcopy(dataset)
-    train_dataset = select(dataset, 1 - test_size, right=True)
+    if shuffle:
+        x, y = shuffle_idx(new_dataset.total_imgs, new_dataset.labels, seed=42)
+        new_dataset.total_imgs = x
+        new_dataset.labels = y
+    train_dataset = select(new_dataset, 1 - test_size, right=True)
     test_dataset = select(new_dataset, 1 - test_size, right=False)
     return train_dataset, test_dataset
 
