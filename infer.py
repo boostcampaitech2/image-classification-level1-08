@@ -1,4 +1,4 @@
-from model.model import ResNet18
+from model.model import ClipModel, EfficientModel
 import pandas as pd
 import os
 import torch
@@ -18,31 +18,46 @@ def copyStateDict(state_dict):
         new_state_dict[name] = v
     return new_state_dict
 
+device = "cuda" if torch.cuda.is_available() else "cpu"
 
-model = ResNet18(num_classes=18)
-model.load_state_dict(copyStateDict(torch.load("./saved/models/Ustage_CLIP/0823_221619/model_best.pth")["state_dict"]))
 
-trsfm = transforms.Compose(
-            [   transforms.CenterCrop((224, 224)),
-                transforms.ToTensor(),
-                transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+# model = ClipModel(num_classes=18).to(device=device)
 
-info_dataframe = pd.read_csv("../input/data/eval/info.csv")
-print(info_dataframe.head())
+paths = ["./saved/models/Efficient/0825_121532/model_best.pth", "./saved/models/Efficient/0825_135304/model_best.pth", 
+        "./saved/models/Efficient/0825_121532/model_best.pth", "./saved/models/Efficient/0825_121532/model_best.pth",  
+        "./saved/models/Efficient/0825_121532/model_best.pth"]
+N = 12600
+total_probs = np.zeros((12600, 18))
+for path in paths:
+    print(path)
+    model = EfficientModel().to(device=device)
+    model.load_state_dict(copyStateDict(torch.load(path)["state_dict"]))
+    model.eval()
+    trsfm = transforms.Compose(
+                [   
+                    # transforms.Resize((256, 256)),
+                    transforms.Resize((456, 456)),
+                    transforms.ToTensor(),
+                transforms.Normalize((0.48145466, 0.4578275, 0.40821073), (0.26862954, 0.26130258, 0.27577711))])
+    info_dataframe = pd.read_csv("../input/data/eval/info.csv")
+    print(info_dataframe.head())
 
-ans = []
+    ans = []
 
-for idx, row in info_dataframe.iterrows():
-    path = "../input/data/eval/images"
-    path = os.path.join(path, row["ImageID"])
-    # print(path)
-    img = Image.open(path)
-    img = trsfm(img).unsqueeze(0)
-    with torch.no_grad():
-        probs = model(img).cpu().numpy()
-        prediction = np.argmax(probs[0], axis=-1)
-    ans.append(prediction)
-    print(f"{idx} : Label probs:", prediction) 
+    for idx, row in info_dataframe.iterrows():
+        path_evaluation = "../input/data/eval/images"
+        path_evaluation = os.path.join(path_evaluation, row["ImageID"])
+        img = Image.open(path_evaluation)
+        img = trsfm(img).unsqueeze(0).to(device)
+        with torch.no_grad():
+            probs = (model(img) + model(torch.flip(img, dims=[3]))) / 2
+            probs= probs.cpu().numpy()
+            total_probs[idx, :] += probs[0]
+            prediction = np.argmax(probs[0], axis=-1)
+        ans.append(prediction)
+        if idx % 100 == 0:
+            print(idx, prediction)
 
-info_dataframe["ans"] = ans
+
+info_dataframe["ans"] = np.argmax(total_probs, axis=-1)
 info_dataframe.to_csv("./submission.csv", index=False)
