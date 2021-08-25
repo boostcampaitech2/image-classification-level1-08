@@ -1,7 +1,8 @@
 import numpy as np
 from torch.utils.data import DataLoader
 from torch.utils.data.dataloader import default_collate
-from torch.utils.data.sampler import SubsetRandomSampler
+from torch.utils.data.sampler import SubsetRandomSampler, WeightedRandomSampler
+from torchsampler import ImbalancedDatasetSampler
 
 
 class BaseDataLoader(DataLoader):
@@ -11,12 +12,12 @@ class BaseDataLoader(DataLoader):
     def __init__(self, dataset, batch_size, shuffle, validation_split, num_workers, collate_fn=default_collate):
         self.validation_split = validation_split
         self.shuffle = shuffle
-
+        self.dataset = dataset
         self.batch_idx = 0
         self.n_samples = len(dataset)
 
         self.sampler, self.valid_sampler = self._split_sampler(self.validation_split)
-
+        # self.sampler = ImbalancedDatasetSampler(dataset)
         self.init_kwargs = {
             'dataset': dataset,
             'batch_size': batch_size,
@@ -42,8 +43,16 @@ class BaseDataLoader(DataLoader):
         else:
             len_valid = int(self.n_samples * split)
 
-        valid_idx = idx_full[0:len_valid]
-        train_idx = np.delete(idx_full, np.arange(0, len_valid))
+        # valid_idx = idx_full[0:len_valid]
+        valid_idx = idx_full[len_valid:len_valid*2]
+        # valid_idx = idx_full[len_valid*2:len_valid*3]
+        # valid_idx = idx_full[len_valid*3:len_valid*4]
+        # valid_idx = idx_full[len_valid*4:]
+        # train_idx = np.delete(idx_full, np.arange(0, len_valid))
+        train_idx = np.delete(idx_full, np.arange(len_valid, len_valid*2))
+        # train_idx = np.delete(idx_full, np.arange(len_valid*2, len_valid*3))
+        # train_idx = np.delete(idx_full, np.arange(len_valid*3, len_valid*4))
+        # train_idx = np.delete(idx_full, np.arange(len_valid*4, self.n_samples))
 
         train_sampler = SubsetRandomSampler(train_idx)
         valid_sampler = SubsetRandomSampler(valid_idx)
