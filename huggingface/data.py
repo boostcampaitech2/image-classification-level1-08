@@ -1,7 +1,9 @@
 import os
-import natsort
+import csv
 import numpy as np
+import pandas as pd
 from typing import Optional, List, Dict, Union
+from abc import ABCMeta, abstractmethod
 
 from PIL import Image
 from copy import deepcopy
@@ -18,111 +20,27 @@ Compose = torchvision.transforms.transforms.Compose
 FeatureExtractor = transformers.feature_extraction_utils.FeatureExtractionMixin
 
 
-def shuffle_idx(*args, seed=42):
-    length = set(map(len, args))
-    assert len(length) == 1
-    idx = [i for i in range(list(length)[0])]
-    np.random.shuffle(idx)
-    args = [[arg[i] for i in idx] for arg in args]
-    return args
-
-
-def select(dataset, ratio, right=False):
-    length = len(dataset)
-    if right:
-        setattr(dataset, "total_imgs", dataset.total_imgs[:int(length*ratio)])
-        if dataset.is_train:
-            setattr(dataset, "labels", dataset.labels[:int(length*ratio)])
-    else:
-        setattr(dataset, "total_imgs", dataset.total_imgs[int(length*ratio):])
-        if dataset.is_train:
-            setattr(dataset, "labels", dataset.labels[int(length*ratio):])
-    return dataset
-
-
-def train_test_split(dataset, test_size=0.2, shuffle=True, seed=42):
-    assert test_size > 0 and test_size < 1
-    if shuffle:
-        x, y = shuffle_idx(dataset.total_imgs, dataset.labels, seed=42)
-        setattr(dataset, "total_imgs", x)
-        setattr(dataset, "labels", y)
-    new_dataset = deepcopy(dataset)
-    train_dataset = select(dataset, 1 - test_size, right=True)
-    test_dataset = select(new_dataset, 1 - test_size, right=False)
-    return train_dataset, test_dataset
-
-
-class FileReadMixin:
-
+class DatasetBase(Dataset):
+    
+    @abstractmethod
+    def __len__(self):
+        pass
+    
+    @abstractmethod
+    def __getitem__(self):
+        pass
+    
     @classmethod
-    def load(cls, data_dir_or_file, is_train=False, **kwargs):
-        if isinstance(data_dir_or_file, str):
-            imgs, labels = cls.read(data_dir_or_file, is_train)
-        else:
-            raise NotImplemented
-
-        return FaceMaskDataset(
-            data_dir=data_dir_or_file,
-            total_imgs=imgs,
-            labels=labels,
-            is_train=is_train,
-            **kwargs,
-        )
-
-    @classmethod
-    def read(cls, data_dir: str, is_train: bool = False):
-        all_imgs = os.listdir(data_dir)
-        all_imgs_file_names = []
-        labels = [] if is_train else None
-        for img in all_imgs:
-            if is_train:
-                subfolder = os.path.join(data_dir, img)
-                if os.path.isdir(subfolder):
-                    for file_name in os.listdir(subfolder):
-                        if not file_name.startswith("._"):
-                            file_path = os.path.join(img, file_name)
-                            all_imgs_file_names.append(file_path)
-                            labels.append(cls.get_label_from_filename(img, file_name))
-            else:
-                if not img.startswith("._"):
-                    all_imgs_file_names.append(img)
-        return all_imgs_file_names, labels
-
-    @staticmethod
-    def add_file(file_list, file_name):
-        if not file_name.startswith("._"):
-            file_list.append(file_name)
-
-    @staticmethod
-    def get_label_from_filename(folder, file_name):
-        # mask label
-        if file_name.startswith("incorrect"):
-            mask = "Incorrect"
-        elif file_name.startswith("normal"):
-            mask = "Not Wear"
-        elif file_name.startswith("mask"):
-            mask = "Wear"
-        else:
-            raise ValueError(f"{file_name}")
-        # gender label
-        gender = folder.split("_")[1].title()
-        # age label
-        age = int(folder.split("_")[-1])
-        if age < 30:
-            age = "<30"
-        elif age < 60:
-            age = ">=30 and <60"
-        else:
-            age = ">=60"
-        return [mask, gender, age]
-
-
-class FaceMaskDataset(Dataset, FileReadMixin):
-
-    mask2id = {"Wear": 0, "Incorrect": 1, "Not Wear": 2}
-    gender2id = {"Male": 0, "Female": 1}
-    age2id = {"<30": 0, ">=30 and <60": 1, ">=60": 2}
-
+    def load(cls, data_dir_or_file: str, is_train: bool = True, **kwargs):
+        pass
+    
+    
+class FaceMaskDataset(DatasetBase):
+    
+    id2mask = {0: "Wear", 1: "Incorrect", 2: "Not Wear"}
+    id2gender = {0: "Male", 1: "Female"}
+    id2age = {0: "<30", 1: ">=30 and <60", 2: ">=60"}
+    
     def __init__(
         self,
         data_dir: str,
@@ -141,16 +59,53 @@ class FaceMaskDataset(Dataset, FileReadMixin):
         self.labels = labels
         self.return_image = return_image
         self.is_train = is_train
-
-    def select(self, ratio=0.1, right=False):
-        return select(self, ratio=ratio, right=right)
-
-    def train_test_split(self, test_size=0.2, shuffle=True, seed=42):
-        return train_test_split(self, test_size=test_size, shuffle=shuffle, seed=seed)
-
+        
+    @classmethod
+    def load(cls, data_dir_or_file: str, is_train: bool = False, **kwargs):
+        is_valid = kwargs.pop("is_valid", None)
+        if data_dir_or_file.endswith("csv"):
+            df = pd.read_csv(data_dir_or_file)
+            if is_valid:
+                train_df = df.groupby("is_valid").get_group(0)
+                valid_df = df.groupby("is_valid").get_group(1)
+                return (
+                    cls(**cls.from_dataframe(train_df), is_train=is_train, **kwargs),
+                    cls(**cls.from_dataframe(valid_df), is_train=is_train, **kwargs),
+                )
+            out = cls.from_dataframe(df)
+        elif os.path.isdir(data_dir_or_file):
+            out = cls.from_dir(data_dir_or_file)
+            
+        return cls(**out, is_train=is_train, **kwargs)
+        
+    @staticmethod
+    def from_dataframe(df: pd.DataFrame):
+        total_imgs = df["path"].tolist()
+        mask = df["mask"].tolist()
+        gender = df["gender"].tolist()
+        age = df["age"].tolist()
+        labels = list(zip(mask, gender, age))
+        return {
+            "total_imgs": total_imgs,
+            "labels": labels,
+            "data_dir": "",
+        }
+    
+    @staticmethod
+    def from_dir(data_dir: str):
+        total_imgs = []
+        for img in os.listdir(data_dir):
+            if not img.startswith("._"):
+                total_imgs.append(img)
+        return {
+            "total_imgs": total_imgs,
+            "labels": [],
+            "data_dir": data_dir,
+        }
+              
     def __len__(self):
         return len(self.total_imgs)
-
+    
     def __getitem__(self, idx):
         img_loc = os.path.join(self.data_dir, self.total_imgs[idx])
         image = Image.open(img_loc).convert("RGB")
@@ -161,12 +116,19 @@ class FaceMaskDataset(Dataset, FileReadMixin):
             pixel_values = torch.from_numpy(pixel_values)
         output = {"pixel_values": pixel_values}
         if self.is_train:
-            mask = self.mask2id[self.labels[idx][0]]
-            gender = self.gender2id[self.labels[idx][1]]
-            age = self.age2id[self.labels[idx][2]]
-            label = [mask, gender, age]
+            if self.level == 3:
+                mask = self.labels[idx][0]
+                gender = self.labels[idx][1]
+                age = self.labels[idx][2]
+                label = [mask, gender, age]
             if self.level == 1:
-                label = 6 * mask + 3 * gender + age
+                try:
+                    mask = self.labels[idx][0]
+                    gender = self.labels[idx][1]
+                    age = self.labels[idx][2]
+                    label = 6 * mask + 3 * gender + age
+                except (TypeError, IndexError):
+                    label = self.labels[idx]
             output.update({"label": label})
         if self.return_image:
             output.update({"image": Image.open(img_loc).convert("RGB")})
