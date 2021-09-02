@@ -3,9 +3,8 @@ import torch.nn.functional as F
 from base import BaseModel
 import torch
 import torchvision
-import clip
-from efficientnet_pytorch import EfficientNet
-
+# from efficientnet_pytorch import EfficientNet
+import timm
 
 class MnistModel(BaseModel):
     def __init__(self, num_classes=10):
@@ -96,20 +95,49 @@ class EfficientModel(BaseModel):
         x = self.fc(x)
         return F.log_softmax(x, dim=-1)
 
-class ClipThreeHeadModel(BaseModel):
+class EfficientModel(BaseModel):
     def __init__(self, num_classes=18):
         super().__init__()
-        self.model, self.preprocess = clip.load("ViT-B/32")
-
-        self.fc = nn.Linear(512, 256)
-        self.relu = nn.ReLU()
-        self.fc1 = nn.Linear(256, 3)
-        self.fc2 = nn.Linear(256, 2)
-        self.fc3 = nn.Linear(256, 3)
+        self.feature_extractor = EfficientNet.from_pretrained("efficientnet-b5")
+        self.fc = nn.Linear(1000, num_classes)
+        
 
     def forward(self, x):
-        with torch.no_grad():
-            x = self.model.encode_image(x)
-        x = x.float()
-        x = self.relu(self.fc(x))
-        return F.log_softmax(self.fc1(x), dim=-1), F.log_softmax(self.fc2(x), dim=-1), F.log_softmax(self.fc3(x), dim=-1)
+        x = self.feature_extractor(x)
+        x = self.fc(x)
+        return F.log_softmax(x, dim=-1)
+
+class Efficientv2Model(BaseModel):
+    def __init__(self, num_classes=18):
+        super().__init__()
+        self.feature_extractor = timm.create_model("efficientnet_b3a")
+        self.fc = nn.Linear(1000, num_classes)
+        
+
+    def forward(self, x):
+        x = self.feature_extractor(x)
+        x = self.fc(x)
+        return F.log_softmax(x, dim=-1)
+
+class NfnetModel(BaseModel):
+    def __init__(self, num_classes=18):
+        super().__init__()
+        self.feature_extractor = timm.create_model("eca_nfnet_l2",
+                num_classes=num_classes,
+                pretrained = True)
+    def forward(self, x):
+        x = self.feature_extractor(x)
+        return x
+
+
+class ResnextModel(BaseModel):
+    def __init__(self, num_classes=18):
+        super().__init__()
+        self.feature_extractor = torch.hub.load("facebookresearch/WSL-Images", "resnext101_32x48d_wsl")
+        self.fc = nn.Linear(1000, num_classes)
+        
+
+    def forward(self, x):
+        x = self.feature_extractor(x)
+        x = self.fc(x)
+        return F.log_softmax(x, dim=-1)
