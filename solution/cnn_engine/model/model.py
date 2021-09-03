@@ -83,6 +83,20 @@ class ClipModel(BaseModel):
         x = self.fc2(x)
         return F.log_softmax(x, dim=-1)
 
+
+class EfficientModelb1(BaseModel): 
+    def __init__(self, num_classes=18):
+        super().__init__()
+        self.feature_extractor = EfficientNet.from_pretrained("efficientnet-b1")
+        self.fc = nn.Linear(1000, num_classes)
+        
+
+    def forward(self, x):
+        x = self.feature_extractor(x)
+        x = self.fc(x)
+        return F.log_softmax(x, dim=-1)
+
+
 class EfficientModel(BaseModel):
     def __init__(self, num_classes=18):
         super().__init__()
