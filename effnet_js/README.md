@@ -1,6 +1,7 @@
-This is a repository of boostcamp image classification contest - level 1
-The classification model is divided into 3 models. Age, gender, mask.
-The results are then concatted into 1 submission csv which contains total 18 classes(3*3*2)
+### This is a repository of boostcamp image classification contest - level 1
+
+- The classification model is divided into 3 models. Age, gender, mask.
+- The results are then concatted into 1 submission csv which contains total 18 classes(3*3*2)
 
 
 ## 0.Data format transform
