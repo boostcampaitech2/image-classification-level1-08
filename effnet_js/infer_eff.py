@@ -12,8 +12,8 @@ from qdnet.conf.config import load_yaml
 parser = argparse.ArgumentParser(description='Hyperparams')
 parser.add_argument('--class_name', help='gender or mask or age')
 args = parser.parse_args()
-#python infer_2.py --class_name gender 
-#python infer_2.py --class_name extra_mask
+#python infer_eff.py --class_name gender 
+#python infer_eff.py --class_name extra_mask
 ############################################## config
 config = load_yaml('./conf/effb3_ns.yaml',args)
 
