@@ -1,11 +1,10 @@
-<br/>
 
 # Introduction  
 
 <p align="center">
-   <img src="./_img/AI_Tech_head.png" style="width:300px; height:60px; margin:100px;" />
+   <img src="./_img/AI_Tech_head.png" style="width:500px; height:120px; margin:100px;" />
    <br/>
-   <img src="./_img/value_boostcamp.png" style="width:600px; height:180px margin:100px;" />
+   <img src="./_img/value_boostcamp.png" style="width:800px; height:200px margin:100px;" />
 </p>
 
 NAVER Boostcamp AI Tech 2기  
