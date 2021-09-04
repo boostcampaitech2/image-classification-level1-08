@@ -75,10 +75,13 @@
 
 ### Evaluation
 
+### Evaluation
+
 | Method | F-score |
 | --- | --- |
 | Synthetic Dataset + non-prtrained BEIT | 76.9 |
 | Synthetic Dataset + NFNet (Pseudo Labeling + Weighted Sampling)| 78.5 |
+| Stacking BEIT + NFNet | 77.1 |
 
 # 4. How to Use
 - `soloution`안에는 각각 **train** •  **test** •  **inference**가 가능한 라이브러리가 들어있습니다  
