@@ -46,7 +46,7 @@ def seed_everything(seed):
     torch.backends.cudnn.deterministic = True
     torch.backends.cudnn.benchmark = True
 
-def train(config):
+def main(config):
     ''' Train model and Inference Test data '''
     
     print('='*100)
@@ -299,6 +299,10 @@ def train(config):
 import argparse
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+
+    parser.add_argument('-c', '--config', default=None, type=str,
+                      help='config file path (default: None)')
+
     parser.add_argument('--seed', type=int, default=1010, help='random seed (default: 1010)')
     parser.add_argument('--epochs', type=int, default=5, help='number of epochs to train (default: 5)')
     parser.add_argument('--dataset', type=str, default='MaskDataSet', help='dataset augmentation type (default: MaskDataSet)')
@@ -329,7 +333,11 @@ if __name__ == '__main__':
     parser.add_argument('--model_dir', type=str, default=os.environ.get('SM_MODEL_DIR', './model'))
 
     args = parser.parse_args()
-    train(args)
+
+    with open(args.config,'r') as f:
+        c = json.load(f)
+
+    main(c)
 
 
 
