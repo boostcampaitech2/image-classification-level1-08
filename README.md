@@ -51,7 +51,10 @@
 - Task : Image Classification
 - Date : 2021.08.22 - 2021.09.02 (2 weeks)
 - Description : 사람의 정면 사진을 입력받아서 `마스크 착용여부`, `성별`, `나이`를 추측하여 `18개의 class`로 분류함  
-
+- Image Resolution : (384 x 512)
+- Train : 18,900 + (External Dataset : https://www.kaggle.com/tapakah68/medical-masks-p4)
+- Test1 : 6,300
+- Test2 : 6,300
 
 ### 🏆 Final Score  
 <p align="center">
