@@ -37,6 +37,9 @@ config = load_yaml(args.config_path, args)
 
 
 def set_seed(seed=0):
+    '''
+    set seed
+    '''
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
