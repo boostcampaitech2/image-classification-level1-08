@@ -73,7 +73,16 @@
 [process]: ./_img/process.png
 <br/>
 
-### Evaluation
+### Checklist
+[x] Transformer based model
+[x] CNN based model
+[x] Age-specific model
+[x] Three-head model
+[x] External Dataset
+[x] Data Augmentation 
+[x] Ensemble
+[x] Test time augmentation
+[x] Stacking
 
 ### Evaluation
 
