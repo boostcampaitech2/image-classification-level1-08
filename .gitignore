@@ -11,9 +11,6 @@ __pycache__/
 *.txt
 *.csv
 *.xlsx
-*.jpg
-*.png
-*.PNG
 input/*
 cache/*
 wandb/*
