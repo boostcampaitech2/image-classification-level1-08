@@ -1,7 +1,7 @@
 <br/>
 
 # Introduction  
-![value_boostcamp](../_img/value_boostcamp.png)  
+![value_boostcamp](./_img/value_boostcamp.png)  
 NAVER Boostcamp AI Tech 2기  
 <br/>
 
@@ -22,28 +22,28 @@ NAVER Boostcamp AI Tech 2기
 `임문경` &nbsp; EDA, Modeling • Visualizing • Search augmentation technique • MLops  
 `진명훈` &nbsp; Modeling • Active Learning • Mentoring • Huggingface pipeline • Handling imbalance problem  
 
-[image1]: ../_img/김지수.jpeg
-[image2]: ../_img/김혜수.png
-[image3]: ../_img/배지연.jpeg
-[image4]: ../_img/이승현.png
-[image5]: ../_img/임문경.png
-[image6]: ../_img/진명훈.jpeg 
+[image1]: ./_img/김지수.jpeg
+[image2]: ./_img/김혜수.png
+[image3]: ./_img/배지연.jpeg
+[image4]: ./_img/이승현.png
+[image5]: ./_img/임문경.png
+[image6]: ./_img/진명훈.jpeg 
   
 <br/>
   
 # Outline  
-![competition_title](../_img/competition_title.png)
+![competition_title](./_img/competition_title.png)
 
 - Type : Image Classification
 - Date : 2021.08.22 - 2021.09.02
 - Description : 사람의 정면 사진을 입력받아서 `마스크 착용여부`, `성별`, `나이`를 추측하여 `18개의 class`로 분류함  
 ![mask_sample][mask_sample] ![class][class]
 
-[mask_sample]: ../_img/mask_sample.png
-[class]: ../_img/class.png
+[mask_sample]: ./_img/mask_sample.png
+[class]: ./_img/class.png
 
 ### Final Score  
-![final_score](../_img/final_score.png)
+![final_score](./_img/final_score.png)
 
 <br/>
 
