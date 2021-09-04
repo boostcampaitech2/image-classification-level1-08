@@ -2,7 +2,7 @@
 data_dir : "./data/"
 data_folder : "./data/"
 image_size : 512
-enet_type : "tf_efficientnet_b3_ns"  # tf_efficientnet_b4_ns/resnest101/seresnext101
+enet_type : "tf_efficientnet_b3_ns"  
 metric_strategy : False
 batch_size : 8
 num_workers : 4
@@ -15,7 +15,7 @@ use_amp : False
 mixup_cutmix : False
 model_dir : "./tf_efficientnet_b3_ns/weight_extra_gender"
 log_dir : "./tf_efficientnet_b3_ns/logs_extra_gender"
-CUDA_VISIBLE_DEVICES : "0"    # 多GPU训练："0,1,2,3"
+CUDA_VISIBLE_DEVICES : "0"    
 fold : "0,1,2,3,4"
 pretrained : True
 eval : "best"                  # "best", "final"
