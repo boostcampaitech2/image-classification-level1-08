@@ -34,16 +34,21 @@ NAVER Boostcamp AI Tech 2기
 # Outline  
 ![competition_title](./_img/competition_title.png)
 
-- Type : Image Classification
-- Date : 2021.08.22 - 2021.09.02
-- Description : 사람의 정면 사진을 입력받아서 `마스크 착용여부`, `성별`, `나이`를 추측하여 `18개의 class`로 분류함  
-![mask_sample][mask_sample] ![class][class]
+<p align="center">
+   <img src="./_img/mask_sample.png" width="300" height="300"> 
+   <img src="./_img/class.png" width="300" height="300"> 
+</p>
+  
+- **Task** : Image Classification
+- **Date** : 2021.08.22 - 2021.09.02 [2 weeks]
+- **Description** : 사람의 정면 사진을 입력받아서 `마스크 착용여부`, `성별`, `나이`를 추측하여 `18개의 class`로 분류함  
 
-[mask_sample]: ./_img/mask_sample.png
-[class]: ./_img/class.png
+<br/>
 
-### Final Score  
-![final_score](./_img/final_score.png)
+### 🏆 Final Score  
+<p align="center">
+   <img src="./_img/final_score.png" width="700" height="100"> 
+</p>
 
 <br/>
 
