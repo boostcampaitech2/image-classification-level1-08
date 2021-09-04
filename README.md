@@ -104,6 +104,7 @@
 
 # 4. How to Use
 - External dataset을 이용하기 위해서는 kaggle 의 https://www.kaggle.com/tapakah68/medical-masks-p4 에서 추가적으로 다운로드 받으셔야 합니다. 
+```
 .
 ├──input/data/train
 ├──input/data/eval
@@ -116,15 +117,19 @@
 │         ├── jisoo
 │         ├── hugging
 │         └── moon
-
+```
 
 - `soloution`안에는 각각 **train** •  **test** •  **inference**가 가능한 라이브러리가 들어있습니다  
 - 사용자는 전체 코드를 내려받은 후, 옵션을 지정하여 개별 라이브러리의 모델을 활용할 수 있습니다
 - 각 라이브러리의 구성요소는 `./solution/__main__.py`에서 확인할 수 있습니다  
 
+### How to make Synthetic Dataset
+- Use the repo Mask the face(https://github.com/aqeelanwar/MaskTheFace)
+- Use the deepface to label age and gender(https://github.com/serengil/deepface)
+
 
 ```bash
-
+git clone https://github.com/boostcampaitech2/image-classification-level1-08.git
 ```
 ```bash
 $python __main__.py -m {module} -s {script} -c {config}
