@@ -77,6 +77,7 @@
 <br/>
 
 ### Checklist
+More Detail : https://github.com/jinmang2/boostcamp_ai_tech_2/blob/main/assets/ppt/palettai.pdf
 - [x] Transformer based model
 - [x] CNN based model
 - [x] Age-specific model
@@ -94,6 +95,7 @@
 - [ ] MC-Dropout
 - [ ] Fixmatch
 - [ ] Semi-supervised learning
+
 ### Evaluation
 
 | Method | F-score |
