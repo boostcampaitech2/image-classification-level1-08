@@ -21,7 +21,7 @@ You can install requirements by typing  `pip install -r requirements.txt`
 |       +-- 000001_female_Asian_45/
 |       +-- 000002_female_Asian_52/
 |       +-- …
-|   +-- new_standard.csv
+|   +-- standard.csv
 +-- eval/
     +-- images/
         +-- 814bff668ae5b9c595ceabcbb6e1ea84634afbd6.jpg
