@@ -1,0 +1,49 @@
+{
+    "name": "Nfnet",
+    "n_gpu": 1,
+    "arch": {
+        "type": "NfnetModel",
+        "args": {}
+    },
+    "data_loader": {
+        "type": "UstageDataLoader",
+        "args": {
+            "data_dir": "../input/data",
+            "batch_size": 32,
+            "shuffle": true,
+            "validation_split": 0.2,
+            "num_workers": 8
+        }
+    },
+    "optimizer": {
+        "type": "SGD",
+        "args": {
+            "lr": 0.1,
+            "weight_decay": 0.0001,
+            "momentum": 0.9
+        }
+    },
+    "loss": "focal_loss",
+    "metrics": [
+        "accuracy",
+        "top_k_acc",
+        "f_score"
+    ],
+    "lr_scheduler": {
+        "type": "OneCycleLR",
+        "args": {
+            "steps_per_epoch": 360,
+            "max_lr": 0.1,
+            "epochs": 5
+        }
+    },
+    "trainer": {
+        "epochs": 5,
+        "save_dir": "saved/",
+        "save_period": 1,
+        "verbosity": 2,
+        "monitor": "max f_score",
+        "early_stop": 10,
+        "tensorboard": true
+    }
+}
