@@ -60,18 +60,25 @@
 
 <br/>
 
-# 3. Process
+# 3. Solution
 ![process][process]
 
 ### KEY POINT
-- 마스크 착용여부, 성별에 대해서는 정확도가 높았으나 나이 분류(특히 60대 이상)에서 상대적으로 정확도가 낮았습니다  
-- 나이와 성별이 다르지만 의상이 비슷한 경우, 또는 마스크를 착용한 것고 비슷한 형태가 이미지에 등장하는 경우 상대적으로 정확도가 낮았습니다  
-- 효과적인 data augmentation 방법론을 찾기 어려웠습니다  
+- 마스크 착용여부, 성별에 대해서는 정확도가 높았으나 나이 분류(특히 60대 이상)에서 상대적으로 정확도가 낮아 이를 해결하는 것이 가장 중요했습니다. 
+- 나이와 성별이 다르지만 의상이 비슷한 경우, 또는 마스크와 비슷한 물체나 형태가 이미지에 등장하는 경우 상대적으로 정확도가 낮았습니다 .
+- Cutmix, Cutout은 일반적으로 이미지 분류 문제 해결에 있어서 효과적이지만 잘못된 예제를 생성하는 현상을 보였습니다. 
 
 &nbsp; &nbsp; → 주요 논점을 해결하는 방법론을 제시하고 실험결과를 공유하며 토론을 반복했습니다   
 
 [process]: ./_img/process.png
 <br/>
+
+### Evaluation
+-  + non-prtrained BEIT : 76.9
+| Method | F-score |
+| ------ | ------- |
+| Synthetic Dataset + non-prtrained BEIT | 76.9 |
+| Synthetic Dataset + NFNet (Pseudo Labeling + Weighted Sampling)| 78.5 |
 
 # 4. How to Use
 - `soloution`안에는 각각 **train** •  **test** •  **inference**가 가능한 라이브러리가 들어있습니다  
