@@ -79,11 +79,11 @@
 ### Checklist
 More Detail : https://github.com/jinmang2/boostcamp_ai_tech_2/blob/main/assets/ppt/palettai.pdf
 - [x] Transformer based model
-- [x] CNN based model
+- [x] CNN based model(CLIP, EfficientNet, Nfnet, ResNet, ResNext)
 - [x] Age-specific model
 - [x] Three-head model
 - [x] External Dataset
-- [x] Data Augmentation 
+- [x] Data Augmentation (Centorcrop, Resize)
 - [x] Focal loss
 - [x] Weighted Sampling
 - [x] Ensemble
@@ -91,6 +91,9 @@ More Detail : https://github.com/jinmang2/boostcamp_ai_tech_2/blob/main/assets/p
 - [x] Test time augmentation
 - [x] Stacking
 - [x] Pseudo Labeling
+- [x] Noise Label Modification 
+- [x] Cutmix, cutout
+- [x] StyleGAN v2 + Mask Synthesis
 - [ ] Ray
 - [ ] MC-Dropout
 - [ ] Fixmatch
@@ -102,6 +105,7 @@ More Detail : https://github.com/jinmang2/boostcamp_ai_tech_2/blob/main/assets/p
 | --- | --- |
 | Synthetic Dataset + EfficientLite0 | 69.0 |
 | Synthetic Dataset + non-prtrained BEIT | 76.9 |
+| Synthetic Dataset + EfficientNet + Age-speicific | 76.9 |
 | Synthetic Dataset + NFNet (Pseudo Labeling + Weighted Sampling)| 78.5 |
 | Stacking BEIT + NFNet | 77.1 |
 
