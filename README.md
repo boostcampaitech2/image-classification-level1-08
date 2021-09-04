@@ -100,6 +100,7 @@ More Detail : https://github.com/jinmang2/boostcamp_ai_tech_2/blob/main/assets/p
 
 | Method | F-score |
 | --- | --- |
+| Synthetic Dataset + EfficientLite0 | 69.0 |
 | Synthetic Dataset + non-prtrained BEIT | 76.9 |
 | Synthetic Dataset + NFNet (Pseudo Labeling + Weighted Sampling)| 78.5 |
 | Stacking BEIT + NFNet | 77.1 |
