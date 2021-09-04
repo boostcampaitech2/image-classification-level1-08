@@ -74,9 +74,9 @@
 <br/>
 
 ### Evaluation
--  + non-prtrained BEIT : 76.9
+
 | Method | F-score |
-| ------ | ------- |
+| --- | --- |
 | Synthetic Dataset + non-prtrained BEIT | 76.9 |
 | Synthetic Dataset + NFNet (Pseudo Labeling + Weighted Sampling)| 78.5 |
 
