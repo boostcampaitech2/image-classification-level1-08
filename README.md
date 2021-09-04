@@ -1,10 +1,12 @@
 <br/>
 
 # Introduction  
+![value_boostcamp](../_img/value_boostcamp.png)  
 NAVER Boostcamp AI Tech 2기  
 <br/>
 
 ## 🎨 AI pallete  
+”색칠을 하다 보면 그림이 완성되어 있을 거예요”  
 ### 1. Members  
    
 김지수|김혜수|배지연|이승현|임문경|진명훈 
@@ -13,12 +15,12 @@ NAVER Boostcamp AI Tech 2기
 [Github](https://github.com/memesoo99)|[Github](https://github.com/vgptnv)|[Github](https://github.com/jiiyeon)|[Github](https://github.com/lsh3163)|[Github](https://github.com/larcane97)|[Github](https://github.com/jinmang2)
 
 ### 2. Contribution  
-`김지수` &nbsp; Modeling, Feature Engineering, Age-specific model, EfficientNet Master, Out of fold  
-`김혜수` &nbsp; Dataset curation, Construct Pipeline, Mental Care, Data license verification  
-`배지연` &nbsp; Dataset generation, Dataset curation, Mask synthesis, Hyperparameter tuning  
-`이승현` &nbsp; Team Management, Dataset preprocessing, Modeling, Make task-specific loss  
-`임문경` &nbsp; EDA, Modeling, Visualizing, Search augmentation technique, MLops  
-`진명훈` &nbsp; Modeling, Active Learning, Mentoring, Huggingface pipeline, Handling imbalance problem  
+`김지수` &nbsp; Modeling • Feature Engineering • Age-specific model • EfficientNet Master • Out of fold  
+`김혜수` &nbsp; Dataset curation • Construct Pipeline • Mental Care • Data license verification  
+`배지연` &nbsp; Dataset generation • Dataset curation • Mask synthesis • Hyperparameter tuning  
+`이승현` &nbsp; Team Management • Dataset preprocessing • Modeling • Make task-specific loss  
+`임문경` &nbsp; EDA, Modeling • Visualizing • Search augmentation technique • MLops  
+`진명훈` &nbsp; Modeling • Active Learning • Mentoring • Huggingface pipeline • Handling imbalance problem  
 
 [image1]: ../_img/김지수.jpeg
 [image2]: ../_img/김혜수.png
