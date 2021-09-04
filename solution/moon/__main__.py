@@ -3,8 +3,7 @@ import json
 import argparse
 
 def run(config):
-    #train.train(config)
-    print(config)
+    train.train(config)
 
 if __name__=='__main__':
     parser = argparse.ArgumentParser()
