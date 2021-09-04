@@ -22,12 +22,12 @@ NAVER Boostcamp AI Tech 2기
 `임문경` &nbsp; EDA, Modeling • Visualizing • Search augmentation technique • MLops  
 `진명훈` &nbsp; Modeling • Active Learning • Mentoring • Huggingface pipeline • Handling imbalance problem  
 
-[image1]: ./_img/김지수.jpeg
+[image1]: ./_img/김지수.jpg
 [image2]: ./_img/김혜수.png
-[image3]: ./_img/배지연.jpeg
+[image3]: ./_img/배지연.jpg
 [image4]: ./_img/이승현.png
 [image5]: ./_img/임문경.png
-[image6]: ./_img/진명훈.jpeg 
+[image6]: ./_img/진명훈.jpg 
   
 <br/>
   
