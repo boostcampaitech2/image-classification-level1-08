@@ -20,5 +20,6 @@
     "pretrained" : true,
     "eval" : "best", 
     "oof_dir" : "./tf_efficientnet_b3_ns/oofs/",
-    "auc_index" : 0
+    "auc_index" : 0,
+    "fold_num": 5
 }

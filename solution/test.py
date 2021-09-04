@@ -4,10 +4,13 @@ import os
 import time
 import random
 import argparse
+import sys
+from pathlib import Path
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
 from sklearn.metrics import roc_auc_score
+from sklearn.metrics import f1_score
 from sklearn.model_selection import StratifiedKFold
 import torch
 import torch.nn as nn
@@ -29,11 +32,11 @@ from qdnet.loss.loss import Loss
 from qdnet.conf.constant import Constant
 
 
-parser = argparse.ArgumentParser(description='Hyperparams')
-parser.add_argument('--config_path', help='config file path')
-parser.add_argument('--n_splits', help='n_splits', type=int)
-args = parser.parse_args()
-config = load_yaml(args.config_path, args)
+# parser = argparse.ArgumentParser(description='Hyperparams')
+# parser.add_argument('--config_path', help='config file path')
+# parser.add_argument('--n_splits', help='n_splits', type=int)
+# args = parser.parse_args()
+# config = load_yaml(args.config_path, args)
 
 
 # def val_epoch(model, loader, mel_idx, get_output=False):
@@ -108,7 +111,7 @@ def val_epoch(model, loader, mel_idx, get_output=False):
 
 
 def main():
-
+    # config = load_yaml(Path(sys.argv[-1]).read_text())
     df, df_test, mel_idx = get_df( config["data_dir"], config["auc_index"]  )   
 
     _, transforms_val = get_transforms(int(config["image_size"]))   
@@ -116,7 +119,8 @@ def main():
     LOGITS = []
     PROBS = []
     dfs = []
-    for fold in range(args.n_splits):
+    n_splits = config["fold_num"]
+    for fold in range(n_splits):
 
         df_valid = df[df['fold'] == fold]
 
@@ -160,7 +164,7 @@ def main():
     auc_all_raw = roc_auc_score(dfs['target'] == mel_idx, dfs['pred'])
 
     dfs2 = dfs.copy()
-    for i in range(args.n_splits):
+    for i in range(n_splits):
         dfs2.loc[dfs2['fold'] == i, 'pred'] = dfs2.loc[dfs2['fold'] == i, 'pred'].rank(pct=True)
     auc_all_rank = roc_auc_score(dfs2['target'] == mel_idx, dfs2['pred'])
     
@@ -173,6 +177,7 @@ def main():
 
 
 if __name__ == '__main__':
+    config = load_yaml(Path(sys.argv[-1]).read_text())
 
     os.makedirs(config["oof_dir"], exist_ok=True)
     os.environ['CUDA_VISIBLE_DEVICES'] = config["CUDA_VISIBLE_DEVICES"]

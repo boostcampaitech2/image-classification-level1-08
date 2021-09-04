@@ -3,11 +3,13 @@
 import os
 import apex
 import time
+import sys
 import random
 import argparse
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
+from pathlib import Path
 from apex import amp
 from sklearn.metrics import roc_auc_score
 from sklearn.metrics import f1_score
@@ -30,10 +32,10 @@ from qdnet.loss.loss import Loss
 from qdnet.conf.constant import Constant
 
 
-parser = argparse.ArgumentParser(description='Hyperparams')
-parser.add_argument('--config_path', help='config file path')
-args = parser.parse_args()
-config = load_yaml(args.config_path, args)
+# parser = argparse.ArgumentParser(description='Hyperparams')
+# parser.add_argument('--config_path', help='config file path')
+# args = parser.parse_args()
+# config = load_yaml(args.config_path, args)
 
 
 def set_seed(seed=0):
@@ -192,7 +194,7 @@ def main():
 
 
 if __name__ == '__main__':
-
+    config = load_yaml(Path(sys.argv[-1]).read_text())
     os.makedirs(config["model_dir"], exist_ok=True)  
     os.makedirs(config["log_dir"], exist_ok=True)    
     os.environ['CUDA_VISIBLE_DEVICES'] = config["CUDA_VISIBLE_DEVICES"]
