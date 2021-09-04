@@ -320,7 +320,7 @@ if __name__ == '__main__':
     parser.add_argument('--lr_scheduler', type=str, default='OneCycleLR', help='learning scheduler (default: OneCycleLR)')
     parser.add_argument('--log_interval', type=int, default=30, help='how many batches to wait before logging training status')
     parser.add_argument('--file_name', default='exp', help='model save at {results}/{file_name}')
-    parser.add_argument('--train_csv', default='/opt/ml/input/data/train/new_standard.csv', help='train data saved csv')
+    parser.add_argument('--train_csv', default='/opt/ml/input/data/train/standard.csv', help='train data saved csv')
     parser.add_argument('--test_dir', default="/opt/ml/input/data/eval", help='test data saved directory')
     parser.add_argument('--mix_up', type=bool, default=False, help='if True, mix-up & cut-mix use')
     parser.add_argument('--num_class',type=int,default=18,help='input the number of class')
