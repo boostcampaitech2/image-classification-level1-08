@@ -34,7 +34,7 @@ You must have **mask dataset** and this **data directory structure** before exec
 # Usage
 **BASIC**
 
-`python3 train.py`
+`python3 train.py -config config.json`
 
 **OPTION**
 ```
@@ -63,7 +63,7 @@ You must have **mask dataset** and this **data directory structure** before exec
 --patience : early stopping patience number, type=Int, default=5
 ```
 
-- ex. `python3 train.py --epochs 30 --file_name my_test_net --mix_up True --seed 42 --pseudo_label True --wandb False`
+- ex. `python3 train.py --config config.json --epochs 30 --file_name my_test_net --mix_up True --seed 42 --pseudo_label True --wandb False`
 
 - **cause** : You have to download new_standard.csv and write file location at option `--train_csv`
 
